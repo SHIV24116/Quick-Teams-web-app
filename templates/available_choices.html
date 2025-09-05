@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Matches</title>
+</head>
+<body>
+   
+  <h2>Available Users</h2>
+  <ul>
+    {% for user in users %}
+      <li>
+        <!-- Profile Photo -->
+        {% if user.photo %}
+          <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" 
+               width="80" height="80" style="border-radius:50%">
+        {% else %}
+          <img src="{{ url_for('static', filename='default.png') }}" 
+               width="80" height="80" style="border-radius:50%">
+        {% endif %}
+        <br>
+
+        <!-- User Info -->
+        <b>{{ user.username }}</b> ({{ user.name }}) - Skills: {{ user.skills }} <br>
+        🎓 {{ user.education or 'Not provided' }} <br>
+        🔗 <a href="{{ user.linkedin }}" target="_blank">LinkedIn</a> | 
+        <a href="{{ user.github }}" target="_blank">GitHub</a> <br>
+        Status: {{ "Available ✅" if user.availability else "Busy ❌" }}
+
+        <!-- Toggle Availability -->
+        <form method="POST" action="{{ url_for('toggle_availability', user_id=user.id) }}" style="display:inline;">
+          <button type="submit">
+            {% if user.availability %}Mark Busy{% else %}Mark Available{% endif %}
+          </button>
+        </form>
+      </li>
+    {% endfor %}
+  </ul>
+  
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Find Matches</title>
+</head>
+<body>
+    <h1>Available Matches</h1>
+
+    <!-- Search bar for skill -->
+    <form method="get" action="{{ url_for('matches') }}">
+        <input type="text" name="skill" placeholder="Enter skill (e.g. Python)" value="{{ skill or '' }}">
+        <button type="submit">Search</button>
+    </form>
+
+    {% if users %}
+        <ul>
+        {% for user in users %}
+            <li>
+              {% if user.photo %}
+                <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" 
+                     width="80" height="80" style="border-radius:50%">
+              {% else %}
+                <img src="{{ url_for('static', filename='default.png') }}" 
+                     width="80" height="80" style="border-radius:50%">
+              {% endif %}
+              <br>
+
+              <b>{{ user.username }}</b> ({{ user.name }}) - Skills: {{ user.skills }}
+              <br>
+              🎓 {{ user.education or 'Not provided' }}<br>
+              🔗 <a href="{{ user.linkedin }}" target="_blank">LinkedIn</a> | 
+              <a href="{{ user.github }}" target="_blank">GitHub</a>
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No matching users found.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">Back to Home</a>
+</body>
+</html>

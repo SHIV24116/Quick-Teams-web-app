@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Create Profile</title>
+</head>
+<body>
+  <h2>Create Your Profile</h2>
+  <form method="POST" enctype="multipart/form-data">
+    Username (unique): <input type="text" name="username" required><br>
+    Full Name: <input type="text" name="name"><br>
+    Skills: <input type="text" name="skills" placeholder="Python, Web Dev, ML"><br>
+    LinkedIn: <input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourprofile"><br>
+    GitHub: <input type="url" name="github" placeholder="https://github.com/yourusername"><br>
+    Education: <input type="text" name="education" placeholder="B.Tech in CSE, IIT Delhi"><br>
+  
+    Profile Photo: <input type="file" name="photo"><br><br>
+  
+    <button type="submit">Save</button>
+  </form>
+</body>
+</html>
