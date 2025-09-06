@@ -1,0 +1,52 @@
+/* form-styles.css */
+
+body {
+    font-family: 'Inter', Arial, sans-serif;
+    background: linear-gradient(135deg, #141e30, #243b55);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: #f4f4f9;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 40px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #ffcc70;
+    text-shadow: 0px 2px 5px rgba(0,0,0,0.4);
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+label {
+    text-align: left;
+    font-weight: 500;
+    color: rgba(255,255,255,0.9);
+}
+
+input[type="text"] {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+    ba

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/form-styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>✏️ Update Profile</h1>
+
+        <form method="POST" enctype="multipart/form-data">
+            <label>Name:</label>
+            <input type="text" name="name" value="{{ user.name }}">
+
+            <label>Skills:</label>
+            <input type="text" name="skills" value="{{ user.skills }}">
+
+            <label>Education:</label>
+            <input type="text" name="education" value="{{ user.education }}">
+
+            <label>LinkedIn:</label>
+            <input type="text" name="linkedin" value="{{ user.linkedin }}">
+
+            <label>GitHub:</label>
+            <input type="text" name="github" value="{{ user.github }}">
+
+            <label>Profile Photo:</label>
+            <input type="file" name="photo">
+
+            <button type="submit">💾 Save Changes</button>
+        </form>
+
+        <p><a href="{{ url_for('home') }}">⬅ Back to Home</a></p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Groups</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylegroups.css') }}">
+</head>
+<body>
+    <h1>👥 My Groups</h1>
+
+    {% if groups %}
+        <ul>
+        {% for group in groups %}
+            <li>
+                <b>{{ group.name }}</b><br>
+                Members:
+                {% for member in group.members %}
+                    {{ member.username }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You are not part of any group yet.</p>
+    {% endif %}
+
+    <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+</body>
+</html>
