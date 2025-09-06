@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Find Matches</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylematch.css') }}">
 </head>
 <body>
     <h1>Available Matches</h1>
@@ -15,7 +16,7 @@
     {% if users %}
         <ul>
         {% for user in users %}
-            <li>
+            <!-- <li>
               {% if user.photo %}
                 <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" 
                      width="80" height="80" style="border-radius:50%">
@@ -30,7 +31,25 @@
               🎓 {{ user.education or 'Not provided' }}<br>
               🔗 <a href="{{ user.linkedin }}" target="_blank">LinkedIn</a> | 
               <a href="{{ user.github }}" target="_blank">GitHub</a>
+            </li> -->
+            <li>
+               {% if user.photo %}
+               <img src="{{ url_for('static', filename='uploads/' + user.photo) }}" 
+                    width="80" height="80" style="border-radius:50%">
+               {% endif %}
+
+                <b>{{ user.username }}</b> ({{ user.name }}) - Skills: {{ user.skills }} 
+                <br>
+                🎓 {{ user.education or 'Not provided' }} <br>
+                🔗 <a href="{{ user.linkedin }}" target="_blank">LinkedIn</a> | 
+                <a href="{{ user.github }}" target="_blank">GitHub</a> <br>
+
+                <!-- Team up button -->
+                <form method="POST" action="{{ url_for('teamup', user_id=user.id) }}">
+                    <button type="submit">🤝 Team Up</button>
+                </form>
             </li>
+
         {% endfor %}
         </ul>
     {% else %}

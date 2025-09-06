@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Requests - Quick Teams</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/available-simple.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>📩 Connection Requests</h1>
+
+        <h2>Incoming Requests</h2>
+        {% if incoming %}
+            <ul>
+            {% for req in incoming %}
+                <li>
+                    From: <b>{{ req.sender.username }}</b> ({{ req.sender.name }})
+                    <form method="POST" action="{{ url_for('accept_request', req_id=req.id) }}" style="display:inline;">
+                        <button type="submit">Accept ✅</button>
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No incoming requests.</p>
+        {% endif %}
+
+        <h2>Outgoing Requests</h2>
+        {% if outgoing %}
+            <ul>
+            {% for req in outgoing %}
+                <li>
+                    To: <b>{{ req.receiver.username }}</b> ({{ req.receiver.name }}) - Status: {{ req.status }}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No outgoing requests.</p>
+        {% endif %}
+
+        <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+    </div>
+</body>
+</html>

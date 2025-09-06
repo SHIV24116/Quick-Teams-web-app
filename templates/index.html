@@ -1,13 +1,80 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Quick Teams</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta property="og:title" content="Quick Teams - Build Your Dream Team">
+    <meta property="og:description" content="Connect and collaborate with the right people. Join 500+ professionals building amazing teams.">
+    <meta property="og:type" content="website">
+    <meta name="description" content="Quick Teams - The ultimate platform to find teammates, build projects, and create successful collaborations.">
+    <meta name="keywords" content="team building, collaboration, networking, professionals, startup, projects">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <title>Quick Teams - Build Your Dream Team</title>
 </head>
 <body>
-  <h1>🚀 Welcome to Quick Teams</h1>
-  <a href="/register">Create Profile</a><br>
-  <a href="/available_choices">Available Profiles</a><br>
-  <a href="{{ url_for('matches') }}">Find Matches</a>
+    <div class="particles">
+        <div class="particle" style="left: 10%; top: 20%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; top: 60%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 30%; top: 10%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 40%; top: 80%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 50%; top: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 60%; top: 70%; animation-delay: 5s;"></div>
+        <div class="particle" style="left: 70%; top: 15%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 80%; top: 50%; animation-delay: 1s;"></div>
+        <div class="particle" style="left: 90%; top: 40%; animation-delay: 3s;"></div>
+        <div class="particle" style="left: 15%; top: 90%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 85%; top: 25%; animation-delay: 7s;"></div>
+        <div class="particle" style="left: 5%; top: 45%; animation-delay: 8s;"></div>
+    </div>
 
+    <div class="container">
+        <h1 data-editable="true">🚀 Build Your Dream Team</h1>
+        <p class="subtitle" data-editable="true">Connect, collaborate, and create amazing things together with the perfect teammates</p>
+        
+        <div class="features">
+            <div class="feature">
+                <span class="feature-icon">🎯</span>
+                <h3 data-editable="true">Smart Matching</h3>
+                <p data-editable="true">AI-powered algorithm finds your perfect teammates based on skills, interests, and goals</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">⚡</span>
+                <h3 data-editable="true">Lightning Fast</h3>
+                <p data-editable="true">Get matched with compatible team members in seconds, not weeks</p>
+            </div>
+            <div class="feature">
+                <span class="feature-icon">🌟</span>
+                <h3 data-editable="true">Proven Results</h3>
+                <p data-editable="true">Join successful teams that have launched startups, won hackathons, and built amazing products</p>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="/register" class="nav-link">
+                <span>🚀</span>
+                <span data-editable="true">Create Your Profile</span>
+            </a>
+            <a href="/available_choices" class="nav-link">
+                <span>👥</span>
+                <span data-editable="true">Browse Teammates</span>
+            </a>
+            <a href="/matches" class="nav-link">
+                <span>🎯</span>
+                <span data-editable="true">Find Perfect Matches</span>
+            </a>
+        </div>
+
+        
+
+        <div class="cta-section">
+            <h3 class="cta-title" data-editable="true">Ready to find your dream team?</h3>
+            
+        </div>
+
+        
+    </div>
 </body>
 </html>

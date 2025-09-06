@@ -2,6 +2,8 @@
 <html>
 <head>
   <title>Matches</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleavailability.css') }}">
+
 </head>
 <body>
    
@@ -25,6 +27,24 @@
         🔗 <a href="{{ user.linkedin }}" target="_blank">LinkedIn</a> | 
         <a href="{{ user.github }}" target="_blank">GitHub</a> <br>
         Status: {{ "Available ✅" if user.availability else "Busy ❌" }}
+
+        <h2>Available Groups</h2>
+        <ul>
+          {% for group in groups %}
+            <li>
+              <b>{{ group.name }}</b> <br>
+              Members: 
+                {% for m in group.members %}
+                  {{ m.username }}{% if not loop.last %}, {% endif %}
+                {% endfor %}
+              <br>
+              <form method="POST" action="{{ url_for('join_group', group_id=group.id) }}">
+                <button type="submit">Join Group</button>
+              </form>
+            </li>
+          {% endfor %}
+        </ul>
+
 
         <!-- Toggle Availability -->
         <form method="POST" action="{{ url_for('toggle_availability', user_id=user.id) }}" style="display:inline;">
