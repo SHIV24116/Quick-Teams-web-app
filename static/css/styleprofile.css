@@ -15,6 +15,7 @@ body {
     color: #fff;
     overflow-x: hidden;
     position: relative;
+    padding: 30px;
 }
 
 /* Background particles */
@@ -46,11 +47,11 @@ form {
         0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-/* Heading */
-h2 {
+/* Form title */
+form .form-title {
     text-align: center;
     font-size: 2rem;
-    margin-bottom: 25px;
+    margin: 0 0 25px 0;
     background: linear-gradient(135deg, #ffffff 0%, #c7d2fe 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -62,13 +63,25 @@ h2 {
     to { filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6)); }
 }
 
+/* Form groups */
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
 /* Input fields */
 input[type="text"], 
 input[type="url"], 
-input[type="file"] {
+input[type="file"],
+input[type="password"] {
     width: 100%;
     padding: 12px;
-    margin: 10px 0 20px;
     border-radius: 10px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     background: rgba(255, 255, 255, 0.05);
@@ -108,4 +121,13 @@ button:hover {
     background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
     transform: translateY(-3px);
     box-shadow: 0 12px 30px rgba(118, 75, 162, 0.6);
+}
+
+/* Responsive tweaks */
+@media (max-width: 800px) {
+    form {
+        max-width: 92%;
+        padding: 26px 18px;
+    }
+    form .form-title { font-size: 1.6rem; }
 }
