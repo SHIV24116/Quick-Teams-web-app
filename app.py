@@ -22,8 +22,7 @@ app.secret_key = os.getenv("SECRET_KEY", "supersecretkey")
 db_path = os.path.join(app.instance_path, "database.db")
 database_url = os.getenv("DATABASE_URL")
 
-if database_url and database_url.startswith("postgres://"):
-    database_url = database_url.replace("postgres://", "postgresql://", 1)
+if database_url and database_url.startswith("postgres://"):database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url or f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -36,6 +35,9 @@ app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 # Initialize extensions
 db = SQLAlchemy(app)
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -294,6 +296,4 @@ def update_profile():
 
 # -------------------- MAIN --------------------
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
     app.run()
