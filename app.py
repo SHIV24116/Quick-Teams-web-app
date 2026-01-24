@@ -22,7 +22,8 @@ app.secret_key = os.getenv("SECRET_KEY", "supersecretkey")
 db_path = os.path.join(app.instance_path, "database.db")
 database_url = os.getenv("DATABASE_URL")
 
-if database_url and database_url.startswith("postgres://"):database_url = database_url.replace("postgres://", "postgresql://", 1)
+if database_url and database_url.startswith("postgres://"):
+    database_url = database_url.replace("postgres://", "postgresql://", 1)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = database_url or f"sqlite:///{db_path}"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -33,11 +34,8 @@ ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "webp"}
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
-# Initialize extensions
+# -------------------- EXTENSIONS --------------------
 db = SQLAlchemy(app)
-@app.before_first_request
-def create_tables():
-    db.create_all()
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -81,6 +79,11 @@ class Group(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100))
     members = db.relationship("User", secondary=group_members, backref="groups")
+
+# -------------------- CREATE TABLES (CORRECT PLACE) --------------------
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -126,7 +129,7 @@ def register():
             return redirect(url_for("register"))
 
         if User.query.filter_by(username=username).first():
-            flash("⚠️ Username already used. Please choose another.", "error")
+            flash("⚠️ Username already used.", "error")
             return redirect(url_for("register"))
 
         user = User(
@@ -188,7 +191,7 @@ def available_choices():
 @login_required
 def toggle_availability(user_id):
     if current_user.id != user_id:
-        flash("❌ You can only change your own availability.", "error")
+        flash("❌ Unauthorized action.", "error")
         return redirect(url_for("available_choices"))
 
     current_user.availability = not current_user.availability
@@ -213,7 +216,7 @@ def matches():
 @login_required
 def teamup(user_id):
     if user_id == current_user.id:
-        flash("⚠️ You cannot send a request to yourself.", "error")
+        flash("⚠️ You cannot send request to yourself.", "error")
         return redirect(url_for("matches"))
 
     existing = ConnectionRequest.query.filter(
@@ -228,7 +231,7 @@ def teamup(user_id):
     ).first()
 
     if existing:
-        flash("ℹ️ A pending request already exists.", "info")
+        flash("ℹ️ Request already exists.", "info")
         return redirect(url_for("matches"))
 
     db.session.add(ConnectionRequest(sender_id=current_user.id, receiver_id=user_id))
@@ -268,7 +271,7 @@ def join_group(group_id):
     if group and current_user not in group.members:
         group.members.append(current_user)
         db.session.commit()
-        flash("✅ You joined the group!", "success")
+        flash("✅ Joined group!", "success")
     else:
         flash("ℹ️ Already a member or group not found.", "info")
 
