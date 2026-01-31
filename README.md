@@ -25,12 +25,15 @@ Quick Teams helps hackathon participants find ideal teammates quickly and effici
 - *Customizable:* Modular code allows adding chat, project tools, or leaderboards.
 
 ## Tech Stack
-- *Backend:* Flask, SQLAlchemy  
+- *Backend:* Python Flask
+- *DataBase:* PostgreSQL
 - *Authentication:* Flask-Login  
 - *Frontend:* HTML, CSS, JavaScript  
 
+## Website live at :
+- https://quick-teams-web-app.onrender.com
+
 ## Getting Started
-website link:https://quick-teams-web-app.onrender.com
 1. Clone the repo:  
    ```bash
    git clone https://github.com/yourusername/Quick-Teams-web-app.git
