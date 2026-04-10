@@ -117,13 +117,13 @@ with app.app_context():
         db.session.rollback()
         
     try:
-        db.session.execute(db.text("ALTER TABLE `group` ADD COLUMN description TEXT"))
+        db.session.execute(db.text('ALTER TABLE "group" ADD COLUMN description TEXT'))
         db.session.commit()
     except Exception:
         db.session.rollback()
         
     try:
-        db.session.execute(db.text("ALTER TABLE connection_request ADD COLUMN group_id INTEGER REFERENCES `group`(id)"))
+        db.session.execute(db.text('ALTER TABLE connection_request ADD COLUMN group_id INTEGER REFERENCES "group"(id)'))
         db.session.commit()
     except Exception:
         db.session.rollback()
