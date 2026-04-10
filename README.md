@@ -1,39 +1,96 @@
-# Quick Teams - Seamless Team Formation & Collaboration
+# Quick Teams — Seamless Team Formation & Collaboration
 
-Quick Teams helps hackathon participants find ideal teammates quickly and efficiently.
+[![Live Demo](https://img.shields.io/badge/Live_Website-Render-informational?style=flat&logo=render&color=3b82f6)](https://quick-teams-web-app.onrender.com)
+[![Python](https://img.shields.io/badge/Python-3.14%2B-informational?logo=python)](https://www.python.org/)
+[![Flask](https://img.shields.io/badge/Flask-Framework-informational?logo=flask)](https://flask.palletsprojects.com/)
 
-## Features
+**Quick Teams** is an elegant, highly customized platform built to solve the hardest part of hackathons: **finding the right teammates and organizing projects lightning-fast**. 
 
-### 1. Seamless Team Formation
-- *Intelligent Skill-Based Matching:* Instantly find teammates by skills for perfect synergy.
-- *Intuitive Connection Requests:* Send, accept, and manage requests with a single click.
-- *Automated Group Creation:* Dedicated team groups are created automatically upon acceptance.
+Recent major updates have transformed the platform into a true "Group Workspace" hub featuring advanced Team Rosters, relevance-based smart search, and a beautiful Unstop-inspired Flat UI.
 
-### 2. Modern User-Centric Design
-- *Clean Interface:* Focus on connecting people without clutter.
-- *Centralized Profiles:* Showcase skills, portfolios (GitHub/LinkedIn), and background.
-- *Availability Management:* Simple toggle to signal availability and prevent unwanted requests.
+---
 
-### 3. Scalable & Secure Foundation
-- *Robust Database:* Built with Flask & SQLAlchemy for reliability and scalability.
-- *Secure File Uploads:* Protects against malicious uploads.
-- *Efficient Authentication:* Uses Flask-Login for secure session management.
+## 🌟 Core Features
 
-### 4. High-Value Integrations
-- *Plug-and-Play:* Easily integrate into hackathons, workshops, or events.
-- *Community Builder:* Encourages engagement and collaboration among participants.
-- *Customizable:* Modular code allows adding chat, project tools, or leaderboards.
+### 1. Robust Multi-Admin Team Engine
+Gone are the days of random peer-to-peer chats. Teams are now formalized, controllable workspaces.
+- **Create Dedicated Teams:** Build a team featuring a distinct **Name** and **Project Description/Pitch**.
+- **Admin Control Panel:** The creator automatically holds an `[Admin]` badge. Admins can selectively promote other team members to administrators, or explicitly kick people out of the team to free up slots.
+- **Specific Invites:** When browsing for talent, Admins use a clean interface to send invites specifically mapped to a single team they administer.
 
-## Tech Stack
-- *Backend:* Python Flask
-- *DataBase:* PostgreSQL
-- *Authentication:* Flask-Login  
-- *Frontend:* HTML, CSS, JavaScript  
+### 2. Relevance-Based Smart Search
+Finding users is no longer a blind scroll. The backend powers a multi-word, case-insensitive scoring algorithm.
+- Need a team member? Search something like: `"Java Python backend"`. 
+- The algorithm tokenizes your query, checks user profiles, and awards points based on exact matching, partial matching, and direct ID hits, sorting the highest-scoring talent perfectly to the top of your radar.
 
-## Website live at :
-- https://quick-teams-web-app.onrender.com
+### 3. Comprehensive User Profiles
+Profiles now serve as true developer resumes.
+- **About Me Pitch:** Write a mini-bio describing exactly what you want to build so Admins know why they should recruit you.
+- **Skill Tokenization:** Skills are entered and displayed as pristine visual tags, not chunky text arrays. 
+- **Availability Toggle:** Easily switch your status to "Looking for a team" or "Just browsing". Users who aren't actively searching won't aggressively clog up the global Match radar.
 
-## Getting Started
-1. Clone the repo:  
+### 4. Flawless Modern UI/UX (Light & Dark Mode)
+The entire aesthetic overhaul mimics high-tier professional developer platforms (like *Unstop*). 
+- **Light Theme Default:** High legibility with crisp white backgrounds, soft card shadows, and vibrant orange/blue interface elements.
+- **Native Dark Mode:** A powerful 🌓 toggle built right into the navigation bar dynamically swaps CSS Root variables across the entire application for coders running late-night sessions.
+- **Toast Notifications:** Clean, slide-in flash alerts confirm all your database actions securely at the top right of the screen.
+
+### 5. Private Live Team Chat
+Every single team workspace comes directly bundled with an encrypted message board where members can rapidly dump links, exchange contact data, and brainstorm architectures.
+
+---
+
+## 🛠️ Technology Stack
+- **Backend:** Python + Flask
+- **Database Architecture:** SQLAlchemy (PostgreSQL on Production, SQLite locally)
+- **Authentication:** Werkzeug Password Hashing + Flask-Login securely tracking User Sessions
+- **Frontend Layer:** Semantic HTML5, Vanilla JavaScript DOM Manipulation, Advanced CSS3 custom properties & Flexbox grids
+
+---
+
+## 🚀 Live Environment
+The project actively deploys via GitHub CI/CD continuous integration schemas to **Render**.
+
+🌐 **Visit Live Application:** [Quick Teams Web App](https://quick-teams-web-app.onrender.com)
+
+---
+
+## 💻 Local Development Setup
+
+We highly recommend utilizing a python virtual environment to build securely:
+
+1. **Clone the repository:**  
    ```bash
-   git clone https://github.com/yourusername/Quick-Teams-web-app.git
+   git clone https://github.com/SHIV24116/Quick-Teams-web-app.git
+   cd Quick-Teams-web-app
+   ```
+
+2. **Initialize Environment:**
+   ```bash
+   python -m venv venv
+   
+   # Windows:
+   .\venv\Scripts\activate
+   # Mac/Linux:
+   source venv/bin/activate
+   ```
+
+3. **Install Requirements:**
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. **Environment Variables:**
+   For local testing without PostgreSQL, use SQLite:
+   ```bash
+   $env:DATABASE_URL="sqlite:///app.db"  # Windows standard
+   ```
+
+5. **Start Flask Server:**
+   ```bash
+   python app.py
+   ```
+   *Note: Database tables and structural migrations securely autogenerate based on SQLAlchemy logic.*
+
+---
+*Built to help hackathon builders focus on what matters: the code.*
