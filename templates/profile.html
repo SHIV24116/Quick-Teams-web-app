@@ -1,76 +1,98 @@
-<!-- <!DOCTYPE html>
-<html>
-<head>
-  <title>Create Profile</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleprofile.css') }}">
-</head>
-<body>
-  <h2>Create Your Profile</h2>
-  <form method="POST" enctype="multipart/form-data">
-    Password: <input type="password" name="password" required><br>
-    Username (unique): <input type="text" name="username" required><br>
-    Full Name: <input type="text" name="name"><br>
-    Skills: <input type="text" name="skills" placeholder="Python, Web Dev, ML"><br>
-    LinkedIn: <input type="url" name="linkedin" placeholder="https://linkedin.com/in/yourprofile"><br>
-    GitHub: <input type="url" name="github" placeholder="https://github.com/yourusername"><br>
-    Education: <input type="text" name="education" placeholder="B.Tech in CSE, IIT Delhi"><br>
-  
-    Profile Photo: <input type="file" name="photo"><br><br>
-  
-    <button type="submit">Save</button>
-  </form>
-</body>
-</html> -->
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Create Profile</title>
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/styleprofile.css') }}">
-</head>
-<body>
-  <form method="POST" enctype="multipart/form-data">
-    <h2 class="form-title">Create Your Profile</h2>
+{% extends 'base.html' %}
+{% block title %}Register{% endblock %}
 
-    <div class="form-group">
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2 class="text-center mb-3">Create an Account</h2>
+        <form method="POST" action="{{ url_for('register') }}" enctype="multipart/form-data">
+            <div class="grid">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" name="username" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" name="password" class="form-control" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Skills (e.g. Python, React)</label>
+                <div class="tags-input-wrapper form-control" id="skills-wrapper">
+                    <span id="tags-container"></span>
+                    <input type="text" id="skill-input" placeholder="Type a skill and hit Enter or comma...">
+                </div>
+                <input type="hidden" name="skills" id="hidden-skills" value="">
+            </div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>LinkedIn URL</label>
+                    <input type="url" name="linkedin" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>GitHub URL</label>
+                    <input type="url" name="github" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Education</label>
+                <input type="text" name="education" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Profile Photo</label>
+                <input type="file" name="photo" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+        </form>
     </div>
+</div>
+<script>
+    const skillInput = document.getElementById('skill-input');
+    const hiddenSkills = document.getElementById('hidden-skills');
+    const tagsContainer = document.getElementById('tags-container');
+    const skillsWrapper = document.getElementById('skills-wrapper');
 
-    <div class="form-group">
-      <label for="username">Username (unique):</label>
-      <input type="text" id="username" name="username" required>
-    </div>
+    let tags = hiddenSkills.value ? hiddenSkills.value.split(',').map(s => s.trim()).filter(s => s) : [];
 
-    <div class="form-group">
-      <label for="name">Full Name:</label>
-      <input type="text" id="name" name="name">
-    </div>
+    function updateTags() {
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag, index) => {
+            const span = document.createElement('span');
+            span.className = 'tag-token';
+            span.innerHTML = `${tag} <button type="button" onclick="removeTag(${index})">&times;</button>`;
+            tagsContainer.appendChild(span);
+        });
+        hiddenSkills.value = tags.join(', ');
+    }
 
-    <div class="form-group">
-      <label for="skills">Skills:</label>
-      <input type="text" id="skills" name="skills" placeholder="Python, Web Dev, ML">
-    </div>
+    function removeTag(index) {
+        tags.splice(index, 1);
+        updateTags();
+    }
 
-    <div class="form-group">
-      <label for="linkedin">LinkedIn:</label>
-      <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
-    </div>
+    skillInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+        }
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const value = skillInput.value.trim().replace(/,/g, '');
+            if (value && !tags.includes(value)) {
+                tags.push(value);
+                skillInput.value = '';
+                updateTags();
+            }
+        } else if (e.key === 'Backspace' && skillInput.value === '' && tags.length > 0) {
+            tags.pop();
+            updateTags();
+        }
+    });
 
-    <div class="form-group">
-      <label for="github">GitHub:</label>
-      <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
-    </div>
-
-    <div class="form-group">
-      <label for="education">Education:</label>
-      <input type="text" id="education" name="education" placeholder="B.Tech in CSE, IIT Delhi">
-    </div>
-
-    <div class="form-group">
-      <label for="photo">Profile Photo:</label>
-      <input type="file" id="photo" name="photo">
-    </div>
-    <button type="submit">Save</button>
-  </form>
-</body>
-</html>
+    skillsWrapper.addEventListener('click', () => skillInput.focus());
+    updateTags();
+</script>
+{% endblock %}

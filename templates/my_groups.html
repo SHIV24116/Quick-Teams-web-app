@@ -1,29 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>My Groups</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylegroups.css') }}">
-</head>
-<body>
-    <h1>👥 My Groups</h1>
+{% extends 'base.html' %}
+{% block title %}My Groups{% endblock %}
 
-    {% if groups %}
-        <ul>
-        {% for group in groups %}
-            <li>
-                <b>{{ group.name }}</b><br>
-                Members:
+{% block content %}
+<div class="mb-3">
+    <h2>My Groups</h2>
+    <p class="text-muted">Your active teams. Click to chat and collaborate.</p>
+</div>
+
+<div class="card mb-4">
+    <h3 class="mb-2" style="color: var(--accent-secondary);">➕ Create New Team</h3>
+    <form method="POST" action="{{ url_for('create_team') }}" style="display: flex; gap: 1rem; align-items: flex-start; flex-wrap: wrap;">
+        <input type="text" name="name" class="form-control" placeholder="Team Name..." required style="flex: 1; min-width: 200px;">
+        <input type="text" name="description" class="form-control" placeholder="What are you building?..." style="flex: 2; min-width: 300px;">
+        <button type="submit" class="btn btn-primary" style="white-space: nowrap;">Create Team</button>
+    </form>
+</div>
+
+{% if groups %}
+    <div class="grid">
+    {% for group in groups %}
+        <div class="card">
+            <h3 class="mb-2">{{ group.name }}</h3>
+            
+            <div class="mb-3">
+                <strong>Members:</strong><br>
                 {% for member in group.members %}
-                    {{ member.username }}{% if not loop.last %}, {% endif %}
+                    <span class="text-muted">• {{ member.username }}</span><br>
                 {% endfor %}
-            </li>
-        {% endfor %}
-        </ul>
-    {% else %}
-        <p>You are not part of any group yet.</p>
-    {% endif %}
+            </div>
 
-    <a href="{{ url_for('home') }}">⬅ Back to Home</a>
-</body>
-</html>
+            <a href="{{ url_for('group_chat', group_id=group.id) }}" class="btn btn-primary" style="width: 100%;">💬 Open Chat</a>
+        </div>
+    {% endfor %}
+    </div>
+{% else %}
+    <div class="card text-center text-muted">
+        <p>You have not joined any groups yet.</p>
+        <p class="mt-2"><a href="{{ url_for('matches') }}" class="btn btn-outline">Find Teammates</a></p>
+    </div>
+{% endif %}
+{% endblock %}

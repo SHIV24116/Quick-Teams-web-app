@@ -1,49 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Quick Teams - Home</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-</head>
-<body>
-    <div class="particles">
-        <div class="particle" style="left: 10%; top: 20%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; top: 60%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 30%; top: 10%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 40%; top: 80%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 50%; top: 30%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 60%; top: 70%; animation-delay: 5s;"></div>
-        <div class="particle" style="left: 70%; top: 15%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 80%; top: 50%; animation-delay: 1s;"></div>
-        <div class="particle" style="left: 90%; top: 40%; animation-delay: 3s;"></div>
-        <div class="particle" style="left: 15%; top: 90%; animation-delay: 6s;"></div>
-        <div class="particle" style="left: 85%; top: 25%; animation-delay: 7s;"></div>
-        <div class="particle" style="left: 5%; top: 45%; animation-delay: 8s;"></div>
-    </div>
+{% extends 'base.html' %}
+{% block title %}Quick Teams - Home{% endblock %}
 
-    <div class="container">
-        <h1>🚀 Welcome to Quick Teams</h1>
-        <p class="subtitle">Find teammates, collaborate, and build amazing projects together!</p>
+{% block content %}
+<div class="hero">
+    <h1>🚀 Welcome to Quick Teams</h1>
+    <p class="subtitle">Find teammates, collaborate, and build amazing projects together!</p>
 
-        {% if current_user.is_authenticated %}
-            <p style="color: rgba(255,255,255,0.8); font-size: 1.1rem;">
-                Logged in as <b>{{ current_user.username }}</b>
-            </p>
-
-            <div class="nav-links">
-                <a href="{{ url_for('matches') }}" class="nav-link">🎯 Find Matches</a>
-                <a href="{{ url_for('matches') }}" class="nav-link">👥 Available Choices</a>
-                <a href="{{ url_for('requests_page') }}" class="nav-link">📩 Requests</a>
-                <a href="{{ url_for('my_groups') }}" class="nav-link">👨‍👩‍👦 My Groups</a>
-                <a href="{{ url_for('update_profile') }}" class="nav-link">✏️ Update Profile</a>
-                <a href="{{ url_for('logout') }}" class="nav-link">🚪 Logout</a>
+    {% if current_user.is_authenticated %}
+        <p class="mb-3">Logged in as <b>{{ current_user.username }}</b></p>
+        <div class="grid">
+            <div class="card text-center">
+                <h3>🎯 Find Matches</h3>
+                <p class="text-muted mb-2">Search for peers by skills or name.</p>
+                <a href="{{ url_for('matches') }}" class="btn btn-primary">Go to Matches</a>
             </div>
-        {% else %}
-            <div class="nav-links">
-                <a href="{{ url_for('login') }}" class="nav-link">🔑 Login</a>
-                <a href="{{ url_for('register') }}" class="nav-link">📝 Register</a>
+            <div class="card text-center">
+                <h3>📩 Requests</h3>
+                <p class="text-muted mb-2">Check out pending connection requests.</p>
+                <a href="{{ url_for('requests_page') }}" class="btn btn-primary">View Requests</a>
             </div>
-        {% endif %}
-    </div>
-</body>
-</html>
+            <div class="card text-center">
+                <h3>👨‍👩‍👦 My Groups</h3>
+                <p class="text-muted mb-2">Chat and collaborate with your teams.</p>
+                <a href="{{ url_for('my_groups') }}" class="btn btn-primary">My Groups</a>
+            </div>
+        </div>
+    {% else %}
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-outline" style="margin-left:1rem;">Login</a>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,44 +1,59 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Requests - Quick Teams</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/stylerequest.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1> Connection Requests</h1>
+{% extends 'base.html' %}
+{% block title %}Connection Requests{% endblock %}
 
-        <h2>Incoming Requests</h2>
-        {% if incoming %}
-            <ul>
-            {% for req in incoming %}
-                <li>
-                    From: <b>{{ req.sender.username }}</b> ({{ req.sender.name }})
-                    <form method="POST" action="{{ url_for('accept_request', req_id=req.id) }}" style="display:inline;">
-                        <button type="submit">Accept ✅</button>
-                    </form>
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No incoming requests.</p>
-        {% endif %}
+{% block content %}
+<div class="mb-3">
+    <h2>Incoming Connection Requests</h2>
+    <p class="text-muted">People who want to form a team with you.</p>
+</div>
 
-        <h2>Outgoing Requests</h2>
-        {% if outgoing %}
-            <ul>
-            {% for req in outgoing %}
-                <li>
-                    To: <b>{{ req.receiver.username }}</b> ({{ req.receiver.name }}) - Status: {{ req.status }}
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>No outgoing requests.</p>
-        {% endif %}
+{% if incoming %}
+    <div class="grid">
+    {% for req in incoming %}
+        <div class="card">
+            <div class="user-badge mb-2">
+                {% if req.sender.photo %}
+                    <img src="{{ url_for('uploaded_file', filename=req.sender.photo) }}" class="user-avatar" alt="Photo">
+                {% else %}
+                    <div class="user-avatar" style="background:#10b981; display:grid; place-items:center; font-weight:bold;">
+                        {{ req.sender.username[0]|upper }}
+                    </div>
+                {% endif %}
+                <div>
+                    <h3 style="margin:0;">{{ req.sender.name or req.sender.username }}</h3>
+                    <small class="text-muted">@{{ req.sender.username }}</small>
+                </div>
+            </div>
+            
+            <p class="mb-3 text-muted">
+                {% if req.group %}
+                Inviting you to join their team: <strong style="color:var(--accent-color);">{{ req.group.name }}</strong>
+                {% else %}
+                Would like to team up with you.
+                {% endif %}
+            </p>
 
-        <a href="{{ url_for('home') }}">⬅ Back to Home</a>
+            {% if req.purpose %}
+            <div style="background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px; margin-bottom: 1rem;">
+                <strong>Note:</strong><br>
+                <em class="text-muted">"{{ req.purpose }}"</em>
+            </div>
+            {% endif %}
+
+            <div class="flex gap-2">
+                <form method="POST" action="{{ url_for('accept', req_id=req.id) }}" style="flex:1;">
+                    <button type="submit" class="btn btn-success" style="width: 100%;">✔️ Accept</button>
+                </form>
+                <form method="POST" action="{{ url_for('decline', req_id=req.id) }}" style="flex:1;">
+                    <button type="submit" class="btn btn-danger" style="width: 100%;">✖ Decline</button>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
     </div>
-</body>
-</html>
+{% else %}
+    <div class="card text-center text-muted">
+        <p>No pending requests.</p>
+    </div>
+{% endif %}
+{% endblock %}

@@ -2,10 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Quick Teams{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}">
 </head>
 <body>
+    <nav class="navbar">
+        <a href="{{ url_for('home') }}" class="navbar-brand">Quick Teams</a>
+        {% if current_user.is_authenticated %}
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+            <a href="{{ url_for('matches') }}" class="nav-link">Matches</a>
+            <a href="{{ url_for('requests_page') }}" class="nav-link">Requests</a>
+            <a href="{{ url_for('my_groups') }}" class="nav-link">My Groups</a>
+            <a href="{{ url_for('update_profile') }}" class="nav-link">Profile</a>
+            <a href="{{ url_for('logout') }}" class="nav-link">Logout</a>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle Theme">🌓</button>
+        </div>
+        {% else %}
+        <div class="nav-links">
+            <a href="{{ url_for('login') }}" class="nav-link">Login</a>
+            <a href="{{ url_for('register') }}" class="nav-link">Register</a>
+            <button id="theme-toggle" class="theme-toggle" title="Toggle Theme">🌓</button>
+        </div>
+        {% endif %}
+    </nav>
+
     <!-- Flash Messages -->
     {% with messages = get_flashed_messages(with_categories=true) %}
       {% if messages %}
@@ -17,13 +39,32 @@
       {% endif %}
     {% endwith %}
 
-    {% block content %}{% endblock %}
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
 
     <script>
-      // Auto-hide flash messages
+      const toggleBtn = document.getElementById('theme-toggle');
+      if (toggleBtn) {
+          const currentTheme = localStorage.getItem('theme') || 'light';
+          if (currentTheme === 'dark') {
+              document.body.setAttribute('data-theme', 'dark');
+          }
+          toggleBtn.addEventListener('click', () => {
+              if (document.body.getAttribute('data-theme') === 'dark') {
+                  document.body.removeAttribute('data-theme');
+                  localStorage.setItem('theme', 'light');
+              } else {
+                  document.body.setAttribute('data-theme', 'dark');
+                  localStorage.setItem('theme', 'dark');
+              }
+          });
+      }
+
       setTimeout(() => {
         document.querySelectorAll('.flash').forEach(el => {
-          el.style.display = 'none';
+          el.style.opacity = '0';
+          setTimeout(() => el.remove(), 300);
         });
       }, 3000);
     </script>

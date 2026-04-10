@@ -1,37 +1,99 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Update Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styleupdate.css') }}">
-</head>
-<body>
-    <div class="container">
-        <h1> Update Profile</h1>
+{% extends 'base.html' %}
+{% block title %}Update Profile{% endblock %}
 
-        <form method="POST" enctype="multipart/form-data">
-            <label>Name:</label>
-            <input type="text" name="name" value="{{ user.name }}">
-
-            <label>Skills:</label>
-            <input type="text" name="skills" value="{{ user.skills }}">
-
-            <label>Education:</label>
-            <input type="text" name="education" value="{{ user.education }}">
-
-            <label>LinkedIn:</label>
-            <input type="text" name="linkedin" value="{{ user.linkedin }}">
-
-            <label>GitHub:</label>
-            <input type="text" name="github" value="{{ user.github }}">
-
-            <label>Profile Photo:</label>
-            <input type="file" name="photo">
-
-            <button type="submit">💾 Save Changes</button>
+{% block content %}
+<div style="max-width: 600px; margin: 0 auto;">
+    <div class="card">
+        <h2 class="text-center mb-3">Update Profile</h2>
+        <form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" name="name" class="form-control" value="{{ user.name or '' }}">
+            </div>
+            <div class="form-group">
+                <label>Skills</label>
+                <div class="tags-input-wrapper form-control" id="skills-wrapper">
+                    <span id="tags-container"></span>
+                    <input type="text" id="skill-input" placeholder="Type a skill and hit Enter or comma...">
+                </div>
+                <input type="hidden" name="skills" id="hidden-skills" value="{{ user.skills or '' }}">
+            </div>
+            <div class="grid">
+                <div class="form-group">
+                    <label>LinkedIn</label>
+                    <input type="url" name="linkedin" class="form-control" value="{{ user.linkedin or '' }}">
+                </div>
+                <div class="form-group">
+                    <label>GitHub</label>
+                    <input type="url" name="github" class="form-control" value="{{ user.github or '' }}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>About Me / Project Pitch</label>
+                <textarea name="about_me" class="form-control" rows="3" placeholder="I am working on an AI task manager...">{{ user.about_me or '' }}</textarea>
+            </div>
+            <div class="form-group">
+                <label>Availability</label>
+                <select name="availability" class="form-control">
+                    <option value="1" {% if user.availability %}selected{% endif %}>Yes, looking for a team</option>
+                    <option value="0" {% if not user.availability %}selected{% endif %}>No, just browsing</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Education</label>
+                <input type="text" name="education" class="form-control" value="{{ user.education or '' }}">
+            </div>
+            <div class="form-group">
+                <label>Profile Photo (leave blank to keep current)</label>
+                <input type="file" name="photo" class="form-control" accept="image/*">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">Save Changes</button>
         </form>
-
-        <p><a href="{{ url_for('home') }}">⬅ Back to Home</a></p>
     </div>
-</body>
-</html>
+</div>
+<script>
+    const skillInput = document.getElementById('skill-input');
+    const hiddenSkills = document.getElementById('hidden-skills');
+    const tagsContainer = document.getElementById('tags-container');
+    const skillsWrapper = document.getElementById('skills-wrapper');
+
+    let tags = hiddenSkills.value ? hiddenSkills.value.split(',').map(s => s.trim()).filter(s => s) : [];
+
+    function updateTags() {
+        tagsContainer.innerHTML = '';
+        tags.forEach((tag, index) => {
+            const span = document.createElement('span');
+            span.className = 'tag-token';
+            span.innerHTML = `${tag} <button type="button" onclick="removeTag(${index})">&times;</button>`;
+            tagsContainer.appendChild(span);
+        });
+        hiddenSkills.value = tags.join(', ');
+    }
+
+    function removeTag(index) {
+        tags.splice(index, 1);
+        updateTags();
+    }
+
+    skillInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault(); 
+        }
+        if (e.key === 'Enter' || e.key === ',') {
+            e.preventDefault();
+            const value = skillInput.value.trim().replace(/,/g, '');
+            if (value && !tags.includes(value)) {
+                tags.push(value);
+                skillInput.value = '';
+                updateTags();
+            }
+        } else if (e.key === 'Backspace' && skillInput.value === '' && tags.length > 0) {
+            tags.pop();
+            updateTags();
+        }
+    });
+
+    skillsWrapper.addEventListener('click', () => skillInput.focus());
+    updateTags();
+</script>
+{% endblock %}
