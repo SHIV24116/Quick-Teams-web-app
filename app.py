@@ -15,9 +15,7 @@ app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "devsecret")
 
 # -------------------- DATABASE (PostgreSQL) --------------------
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
-    raise RuntimeError("DATABASE_URL is not set")
+DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///app.db")
 
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -104,29 +102,19 @@ class Message(db.Model):
 # -------------------- CREATE TABLES --------------------
 with app.app_context():
     db.create_all()
-    try:
-        db.session.execute(db.text("ALTER TABLE connection_request ADD COLUMN purpose TEXT"))
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        
-    try:
-        db.session.execute(db.text("ALTER TABLE user ADD COLUMN about_me TEXT"))
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        
-    try:
-        db.session.execute(db.text('ALTER TABLE "group" ADD COLUMN description TEXT'))
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
-        
-    try:
-        db.session.execute(db.text('ALTER TABLE connection_request ADD COLUMN group_id INTEGER REFERENCES "group"(id)'))
-        db.session.commit()
-    except Exception:
-        db.session.rollback()
+    # Migration helper for legacy databases (adds columns if they're missing)
+    def add_column_if_missing(table, column, type_def):
+        try:
+            db.session.execute(db.text(f"ALTER TABLE {table} ADD COLUMN {column} {type_def}"))
+            db.session.commit()
+            print(f"Added column {column} to {table}")
+        except Exception:
+            db.session.rollback()
+
+    add_column_if_missing("connection_request", "purpose", "TEXT")
+    add_column_if_missing("user", "about_me", "TEXT")
+    add_column_if_missing('"group"', "description", "TEXT")
+    add_column_if_missing("connection_request", 'group_id', 'INTEGER REFERENCES "group"(id)')
 
 # -------------------- LOGIN MANAGER --------------------
 @login_manager.user_loader
@@ -428,4 +416,5 @@ def update_profile():
 
 # -------------------- MAIN --------------------
 if __name__ == "__main__":
-    app.run()
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
