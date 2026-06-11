@@ -106,31 +106,40 @@ class Message(db.Model):
     sender = db.relationship("User", foreign_keys=[sender_id])
     group = db.relationship("Group", foreign_keys=[group_id], backref="messages")
 
-# -------------------- CREATE TABLES --------------------
-with app.app_context():
-    try:
-        logger.info("Initializing database tables...")
-        db.create_all()
-        
-        # Migration helper for legacy databases (adds columns if they're missing)
-        def add_column_if_missing(table, column, type_def):
-            try:
-                db.session.execute(db.text(f"ALTER TABLE {table} ADD COLUMN {column} {type_def}"))
-                db.session.commit()
-                logger.info(f"Migration: Added column {column} to {table}")
-            except Exception as e:
-                db.session.rollback()
-                # logger.debug(f"Migration skipped for {column} in {table}: {e}")
+# -------------------- DATABASE INIT (Lazy) --------------------
+_db_initialized = False
 
-        add_column_if_missing("connection_request", "purpose", "TEXT")
-        add_column_if_missing("user", "about_me", "TEXT")
-        add_column_if_missing('"group"', "description", "TEXT")
-        add_column_if_missing("connection_request", 'group_id', 'INTEGER REFERENCES "group"(id)')
-        logger.info("Database initialization complete.")
-    except Exception as e:
-        logger.error(f"Failed to initialize database: {e}")
-        # On Render, we might want to continue even if DB fails initially to allow the app to be "up" for health checks
-        # But for now, we want to see the error.
+def init_db():
+    global _db_initialized
+    if _db_initialized:
+        return
+    
+    with app.app_context():
+        try:
+            logger.info("Lazy-initializing database tables...")
+            db.create_all()
+            
+            def add_column_if_missing(table, column, type_def):
+                try:
+                    db.session.execute(db.text(f"ALTER TABLE {table} ADD COLUMN {column} {type_def}"))
+                    db.session.commit()
+                except Exception:
+                    db.session.rollback()
+
+            add_column_if_missing("connection_request", "purpose", "TEXT")
+            add_column_if_missing("user", "about_me", "TEXT")
+            add_column_if_missing('"group"', "description", "TEXT")
+            add_column_if_missing("connection_request", 'group_id', 'INTEGER REFERENCES "group"(id)')
+            
+            _db_initialized = True
+            logger.info("Database lazy-initialization complete.")
+        except Exception as e:
+            logger.error(f"Lazy-init failed: {e}")
+
+@app.before_request
+def ensure_db():
+    if request.endpoint != 'health_check':
+        init_db()
 
 # -------------------- LOGIN MANAGER --------------------
 @login_manager.user_loader
