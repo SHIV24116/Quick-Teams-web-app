@@ -1,4 +1,6 @@
 import os
+import sys
+import logging
 from flask import Flask, render_template, request, redirect, url_for, flash, send_from_directory
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
@@ -14,8 +16,13 @@ from werkzeug.utils import secure_filename
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "devsecret")
 
+# -------------------- LOGGING --------------------
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
 # -------------------- DATABASE (PostgreSQL) --------------------
 DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///app.db")
+logger.info(f"Connecting to database: {DATABASE_URL.split('@')[-1] if '@' in DATABASE_URL else 'local sqlite'}")
 
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
@@ -101,20 +108,29 @@ class Message(db.Model):
 
 # -------------------- CREATE TABLES --------------------
 with app.app_context():
-    db.create_all()
-    # Migration helper for legacy databases (adds columns if they're missing)
-    def add_column_if_missing(table, column, type_def):
-        try:
-            db.session.execute(db.text(f"ALTER TABLE {table} ADD COLUMN {column} {type_def}"))
-            db.session.commit()
-            print(f"Added column {column} to {table}")
-        except Exception:
-            db.session.rollback()
+    try:
+        logger.info("Initializing database tables...")
+        db.create_all()
+        
+        # Migration helper for legacy databases (adds columns if they're missing)
+        def add_column_if_missing(table, column, type_def):
+            try:
+                db.session.execute(db.text(f"ALTER TABLE {table} ADD COLUMN {column} {type_def}"))
+                db.session.commit()
+                logger.info(f"Migration: Added column {column} to {table}")
+            except Exception as e:
+                db.session.rollback()
+                # logger.debug(f"Migration skipped for {column} in {table}: {e}")
 
-    add_column_if_missing("connection_request", "purpose", "TEXT")
-    add_column_if_missing("user", "about_me", "TEXT")
-    add_column_if_missing('"group"', "description", "TEXT")
-    add_column_if_missing("connection_request", 'group_id', 'INTEGER REFERENCES "group"(id)')
+        add_column_if_missing("connection_request", "purpose", "TEXT")
+        add_column_if_missing("user", "about_me", "TEXT")
+        add_column_if_missing('"group"', "description", "TEXT")
+        add_column_if_missing("connection_request", 'group_id', 'INTEGER REFERENCES "group"(id)')
+        logger.info("Database initialization complete.")
+    except Exception as e:
+        logger.error(f"Failed to initialize database: {e}")
+        # On Render, we might want to continue even if DB fails initially to allow the app to be "up" for health checks
+        # But for now, we want to see the error.
 
 # -------------------- LOGIN MANAGER --------------------
 @login_manager.user_loader
