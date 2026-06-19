@@ -48,13 +48,6 @@ Every single team workspace comes directly bundled with an encrypted message boa
 
 ---
 
-## 🚀 Live Environment
-The project actively deploys via GitHub CI/CD continuous integration schemas to **Render**.
-
-🌐 **Visit Live Application:** [Quick Teams Web App](https://quick-teams-web-app.onrender.com)
-
----
-
 ## 💻 Local Development Setup
 
 We highly recommend utilizing a python virtual environment to build securely:
