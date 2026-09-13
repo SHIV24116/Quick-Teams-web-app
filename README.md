@@ -1,89 +1,141 @@
-# Quick Teams — Seamless Team Formation & Collaboration
+# Quick Teams — Modern Talent Workspace & Team Engine
 
-[![Live Demo](https://img.shields.io/badge/Live_Website-Render-informational?style=flat&logo=render&color=3b82f6)](https://quick-teams-web-app.onrender.com)
-[![Python](https://img.shields.io/badge/Python-3.14%2B-informational?logo=python)](https://www.python.org/)
-[![Flask](https://img.shields.io/badge/Flask-Framework-informational?logo=flask)](https://flask.palletsprojects.com/)
+[![React](https://img.shields.io/badge/Frontend-React_18_%2B_Vite-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Backend-Node.js_%2B_Express-339933?logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Python](https://img.shields.io/badge/Microservice-FastAPI-009688?logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com/)
+[![Tailwind CSS](https://img.shields.io/badge/Styling-Tailwind_CSS-38B2AC?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![Sequelize](https://img.shields.io/badge/ORM-Sequelize_SQL-52B0E7?logo=sequelize&logoColor=white)](https://sequelize.org/)
 
-**Quick Teams** is an elegant, highly customized platform built to solve the hardest part of hackathons: **finding the right teammates and organizing projects lightning-fast**. 
+**Quick Teams** is an elegant, full-stack team workspace and developer matching engine designed to solve the hardest part of hackathons and tech projects: **building dream teams with verified techstacks and organizing project workspaces lightning-fast**.
 
-Recent major updates have transformed the platform into a true "Group Workspace" hub featuring advanced Team Rosters, relevance-based smart search, and a beautiful Unstop-inspired Flat UI.
+---
+
+## 📸 Application Screenshots
+
+### 1. Hero Dashboard Landing Page
+Modern, high-impact landing page highlighting live hackathon platform capabilities, active team workspaces, and developer search CTAs.
+
+![Hero Dashboard Landing Page](docs/assets/hero-dashboard.png)
+
+---
+
+### 2. Smart Talent Match Radar
+Browse developers using relevance-ranked skill scoring algorithms. Filter candidates by skills, view developer pitch bios, and send instant team invites.
+
+![Smart Talent Match Radar](docs/assets/talent-match-radar.png)
+
+---
+
+### 3. Developer Account & Interactive Skill Selection
+Clean developer onboarding featuring tokenized skill selection with autocomplete suggestions, popular techstack quick-chips, and talent search availability toggles.
+
+![Developer Account & Interactive Skill Selection](docs/assets/developer-registration.png)
+
+---
+
+### 4. Team Workspace & Project Creation
+Establish formal team channels with project pitch descriptions, multi-admin management controls (`[Admin]` badges, promote/kick permissions), and real-time team chat.
+
+![Team Workspace & Project Creation](docs/assets/create-team-modal.png)
 
 ---
 
 ## 🌟 Core Features
 
-### 1. Robust Multi-Admin Team Engine
-Gone are the days of random peer-to-peer chats. Teams are now formalized, controllable workspaces.
-- **Create Dedicated Teams:** Build a team featuring a distinct **Name** and **Project Description/Pitch**.
-- **Admin Control Panel:** The creator automatically holds an `[Admin]` badge. Admins can selectively promote other team members to administrators, or explicitly kick people out of the team to free up slots.
-- **Specific Invites:** When browsing for talent, Admins use a clean interface to send invites specifically mapped to a single team they administer.
-
-### 2. Relevance-Based Smart Search
-Finding users is no longer a blind scroll. The backend powers a multi-word, case-insensitive scoring algorithm.
-- Need a team member? Search something like: `"Java Python backend"`. 
-- The algorithm tokenizes your query, checks user profiles, and awards points based on exact matching, partial matching, and direct ID hits, sorting the highest-scoring talent perfectly to the top of your radar.
-
-### 3. Comprehensive User Profiles
-Profiles now serve as true developer resumes.
-- **About Me Pitch:** Write a mini-bio describing exactly what you want to build so Admins know why they should recruit you.
-- **Skill Tokenization:** Skills are entered and displayed as pristine visual tags, not chunky text arrays. 
-- **Availability Toggle:** Easily switch your status to "Looking for a team" or "Just browsing". Users who aren't actively searching won't aggressively clog up the global Match radar.
-
-### 4. Flawless Modern UI/UX (Light & Dark Mode)
-The entire aesthetic overhaul mimics high-tier professional developer platforms (like *Unstop*). 
-- **Light Theme Default:** High legibility with crisp white backgrounds, soft card shadows, and vibrant orange/blue interface elements.
-- **Native Dark Mode:** A powerful 🌓 toggle built right into the navigation bar dynamically swaps CSS Root variables across the entire application for coders running late-night sessions.
-- **Toast Notifications:** Clean, slide-in flash alerts confirm all your database actions securely at the top right of the screen.
-
-### 5. Private Live Team Chat
-Every single team workspace comes directly bundled with an encrypted message board where members can rapidly dump links, exchange contact data, and brainstorm architectures.
+- **⚡ Smart Talent Matcher Radar:** Multi-attribute recommendation engine powered by a Python microservice to match developers based on query relevance and skill tags (`React`, `Node.js`, `Python`, `SQL`, etc.).
+- **🏷️ Interactive Techstack Selector:** Seamless skill management with interactive token badges, autocomplete dropdowns, keyboard controls (`Enter`, `Comma`, `Backspace`), and preset techstack chips.
+- **🛡️ Multi-Admin Team Workspaces:** Form dedicated project channels featuring custom project pitches, admin badges, administrative user promotion/kick controls, and leave-team capabilities.
+- **💬 Real-Time Team Chat:** Integrated group messaging in every team workspace for exchanging repository links, system architecture diagrams, and hackathon ideas.
+- **🌗 Light & Dark Theme Switcher:** Built-in native theme manager with custom CSS variables and smooth transitions across dark and light modes.
+- **🟢 Search Availability Toggle:** Easily toggle your profile status between *"Looking for Team"* and *"Just Browsing"* to control radar visibility.
 
 ---
 
-## 🛠️ Technology Stack
-- **Backend:** Python + Flask
-- **Database Architecture:** SQLAlchemy (PostgreSQL on Production, SQLite locally)
-- **Authentication:** Werkzeug Password Hashing + Flask-Login securely tracking User Sessions
-- **Frontend Layer:** Semantic HTML5, Vanilla JavaScript DOM Manipulation, Advanced CSS3 custom properties & Flexbox grids
+## 🛠️ Architecture & Technology Stack
+
+| Layer | Framework / Technologies | Description |
+| :--- | :--- | :--- |
+| **Frontend** | React 18, Vite, Redux Toolkit, React Router v6, Tailwind CSS, Lucide Icons | Responsive single-page application with centralized state management for auth, teams, matches, and themes. |
+| **Backend API** | Node.js, Express.js, Sequelize ORM, JWT, BcryptJS, Multer | RESTful API supporting dual-mode database operation: MySQL for production and SQLite fallback for local dev. |
+| **Recommendation Engine** | Python, FastAPI, Pydantic, Custom Skill Scoring Engine | Multi-word tokenization and relevance-scoring microservice for candidate ranking. |
 
 ---
 
+## 📁 Repository Structure
+
+```
+Quick-Teams-web-app-1/
+├── frontend/                 # React + Redux Toolkit + Tailwind CSS Client
+│   ├── src/
+│   │   ├── api/             # Axios instance & interceptors
+│   │   ├── components/      # Navbar, SkillSelector, InviteModal, ToastAlert
+│   │   ├── store/           # Redux slices (auth, team, match, theme)
+│   │   └── pages/           # Home, Login, Register, Matches, MyTeams, Workspace, Profile
+│   ├── package.json
+│   └── vite.config.js
+│
+├── backend/                  # Node.js + Express REST API Server
+│   ├── config/              # Database connection (MySQL / SQLite fallback)
+│   ├── models/              # Sequelize models (User, Team, TeamMember, Request, Message)
+│   ├── controllers/         # Auth, User, Team, Invite, Chat logic
+│   ├── routes/              # Express route definitions
+│   └── server.js
+│
+├── python-services/          # Python Recommendation Microservice
+│   ├── matcher.py           # Skill tokenization & relevance ranking logic
+│   ├── main.py              # FastAPI endpoints (/health, /api/v1/recommend)
+│   └── requirements.txt
+│
+└── docs/assets/              # Application screenshots & visual assets
+```
+
+---
 ## 💻 Local Development Setup
 
-We highly recommend utilizing a python virtual environment to build securely:
-
-1. **Clone the repository:**  
-   ```bash
-   git clone https://github.com/SHIV24116/Quick-Teams-web-app.git
-   cd Quick-Teams-web-app
-   ```
-
-2. **Initialize Environment:**
-   ```bash
-   python -m venv venv
-   
-   # Windows:
-   .\venv\Scripts\activate
-   # Mac/Linux:
-   source venv/bin/activate
-   ```
-
-3. **Install Requirements:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Environment Variables:**
-   For local testing without PostgreSQL, use SQLite:
-   ```bash
-   $env:DATABASE_URL="sqlite:///app.db"  # Windows standard
-   ```
-
-5. **Start Flask Server:**
-   ```bash
-   python app.py
-   ```
-   *Note: Database tables and structural migrations securely autogenerate based on SQLAlchemy logic.*
+### 1. Prerequisites
+- **Node.js** (v18+) & **npm**
+- **Python** (v3.9+)
 
 ---
-*Built to help hackathon builders focus on what matters: the code.*
+
+### 2. Backend Setup (Node.js API)
+```bash
+cd backend
+npm install
+node server.js
+```
+*The backend API will start on `http://localhost:5000` with SQLite database automatically initialized.*
+
+---
+
+### 3. Recommendation Microservice (Python FastAPI)
+```bash
+cd python-services
+pip install -r requirements.txt
+python main.py
+```
+*The Python FastAPI recommendation service will start on `http://localhost:8000`.*
+
+---
+
+### 4. Frontend Setup (React + Vite)
+```bash
+cd frontend
+npm install
+npm run dev
+```
+*Open `http://localhost:3000` in your browser to launch the Quick Teams application.*
+
+---
+
+## 🧪 Build Verification
+
+To compile the production frontend build:
+```bash
+cd frontend
+npm run build
+```
+
+---
+
+*Built with ❤️ for Hackathon Builders & Developer Teams.*
